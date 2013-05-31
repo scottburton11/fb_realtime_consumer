@@ -19,15 +19,16 @@ class API < Grape::API
   resource 'events' do
     get "/" do
       if params['hub.verify_token'] == "test-app-123"
-        [200, {}, params['hub.challenge']]
+        params['hub.challenge']
       else
-        [401, {}, "Verification failed"]
+        error!("Verification failed", 401)
       end
     end
 
     post "/" do
       env['rack.logger'].info params
-      [201, {}, :created]
+      status 201
+      "Created"
     end
   end
 end

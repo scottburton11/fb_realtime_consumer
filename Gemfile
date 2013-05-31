@@ -1,4 +1,4 @@
-source :rubygems
+source "https://rubygems.org"
 gem 'goliath'
 gem 'foreman'
 gem 'grape'
