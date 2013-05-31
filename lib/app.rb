@@ -19,7 +19,7 @@ class API < Grape::API
   resource 'events' do
     get "/" do
       if params['hub.verify_token'] == "test-app-123"
-        params['hub.challenge']
+        params['hub.challenge'].to_i
       else
         error!("Verification failed", 401)
       end
