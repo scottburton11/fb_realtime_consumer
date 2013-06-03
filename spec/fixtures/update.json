@@ -1,0 +1,37 @@
+{
+  "object": "page",
+  "entry": [
+    {
+      "id": "591041887581502",
+      "time": 1370044113,
+      "changes": [
+        {
+          "field": "feed",
+          "value": {
+            "item": "like",
+            "verb": "remove",
+            "parent_id": 591046930914331,
+            "sender_id": 591041887581502,
+            "created_time": 1370044113
+          }
+        }
+      ]
+    },
+    {
+      "id": "591041887581502",
+      "time": 1370044114,
+      "changes": [
+        {
+          "field": "feed",
+          "value": {
+            "item": "like",
+            "verb": "add",
+            "parent_id": 591046930914331,
+            "sender_id": 591041887581502,
+            "created_time": 1370044114
+          }
+        }
+      ]
+    }
+  ]
+}
