@@ -1,4 +1,5 @@
 require 'json'
+require 'pry-remote'
 
 class API < Grape::API
   format :json
@@ -6,6 +7,14 @@ class API < Grape::API
   helpers do
     def redis
       env.config['redis']
+    end
+
+    def queue
+      env.config['queue']
+    end
+
+    def exchange
+      env.config['exchange']
     end
   end
 
@@ -21,22 +30,11 @@ class API < Grape::API
     post "/" do
       env['rack.logger'].info params
 
-
       begin
-        event_set = EventSet.new(params)
-
-        event_set.events.each do |event|
-          event.changes.each do |change|
-            if change.like?
-              redis.send(change.operator, "fb-#{(change.target_id || event.id)}-likes_count")
-              if change.add?
-                redis.sadd("fb-#{change.target_id || event.id}-likes", {:actor_id => change.actor_id, :time => change.time})
-              end
-            end
-          end
-        end
+        exchange.publish(JSON.dump(params))
       rescue => e
-        env['rack.logger'].warn e
+        env['rack.logger'].error "#{e}"
+        env['rack.logger'].error JSON.dump(params)
       end
 
       status 201

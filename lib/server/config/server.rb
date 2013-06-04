@@ -1,5 +1,6 @@
 require 'bundler/setup'
 require 'em-redis'
+require 'amqp'
 
 config['test'] = "Foo"
 
@@ -9,3 +10,12 @@ if ENV["REDISTOGO_URL"]
 else
   config['redis'] = EM::Protocols::Redis.connect 
 end
+
+if ENV["CLOUDAMQP_URL"]
+  config['queue'] = AMQP.connect(ENV["CLOUDAMQP_URL"])
+else
+  config['queue'] = AMQP.connect
+end
+
+config['channel'] = AMQP::Channel.new(config['queue'])
+config['exchange'] = config['channel'].fanout("hyfn8.facebook.publish")
