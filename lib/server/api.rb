@@ -13,14 +13,18 @@ class API < Grape::API
       env.config['queue']
     end
 
-    def exchange
-      env.config['exchange']
+    def verify_token
+      env.config['verify_token']
+    end
+
+    def logger
+      env['rack.logger']
     end
   end
 
   resource 'events' do
     get "/" do
-      if params['hub.verify_token'] == "test-app-123"
+      if params['hub.verify_token'] == verify_token
         params['hub.challenge'].to_i
       else
         error!("Verification failed", 401)
@@ -28,10 +32,11 @@ class API < Grape::API
     end
 
     post "/" do
-      env['rack.logger'].info params
+      env['rack.logger'].info JSON.dump(params)
 
       begin
-        exchange.publish(JSON.dump(params))
+        # exchange.publish(JSON.dump(params))
+        redis.rpush queue, JSON.dump(params)
       rescue => e
         env['rack.logger'].error "#{e}"
         env['rack.logger'].error JSON.dump(params)

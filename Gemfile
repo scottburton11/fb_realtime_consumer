@@ -6,7 +6,6 @@ gem 'grape'
 gem 'psych'
 gem 'hashie'
 gem 'em-redis'
-gem 'amqp'
 
 gem 'pry-remote'
 
