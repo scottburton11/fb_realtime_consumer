@@ -12,4 +12,4 @@ end
 
 config['queue'] = ENV['REALTIME_SOURCE_QUEUE'] || "realtime:fb:source"
 
-config['verify_token'] = ENV['verify_token'] || "test-app-123"
+config['verify_token'] = ENV['VERIFY_TOKEN'] || "test-app-123"
